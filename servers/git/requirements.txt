@@ -1,7 +1,15 @@
-fastapi
-uvicorn[standard]
-pydantic
-python-multipart
-
-pytz
-python-dateutil
+echo "##active_line4##"
+fastapi==0.115.12
+echo "##active_line5##"
+uvicorn[standard]==0.34.0
+echo "##active_line6##"
+pydantic==2.11.2
+echo "##active_line7##"
+python-multipart==0.0.20
+echo "##active_line8##"
+pytz==2025.2
+echo "##active_line9##"
+python-dateutil==2.9.0
+echo "##active_line10##"
+gitpython==3.1.43
+echo "##active_line11##"

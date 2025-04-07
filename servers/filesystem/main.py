@@ -16,7 +16,15 @@ app = FastAPI(
     description="A secure file manipulation server for reading, editing, writing, listing, and searching files with access restrictions.",
 )
 
-origins = ["*"]
+# Configure CORS with explicit origins
+origins = [
+    "http://localhost:3000",    # Default Open WebUI port
+    "http://localhost:8080",    # Alternative development port
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:8080",
+    "http://0.0.0.0:3000",
+    "http://0.0.0.0:8080",
+]
 
 app.add_middleware(
     CORSMiddleware,
@@ -24,13 +32,15 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],  # Important for file operations
 )
 
 
 # Constants
-ALLOWED_DIRECTORIES = [
+# Update allowed directories to be configurable via environment variable
+ALLOWED_DIRECTORIES = os.getenv("ALLOWED_DIRECTORIES", "").split(",") or [
     str(pathlib.Path(os.path.expanduser("~/mydir")).resolve())
-]  # 👈 Replace with your paths
+]
 
 # ------------------------------------------------------------------------------
 # Utility functions
@@ -257,3 +267,11 @@ async def list_allowed_directories():
     Show all directories this server can access.
     """
     return {"allowed_directories": ALLOWED_DIRECTORIES}
+
+
+@app.get("/health")
+def health_check():
+    """
+    Health check endpoint
+    """
+    return {"status": "healthy", "service": "filesystem-server"}

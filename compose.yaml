@@ -3,15 +3,30 @@ services:
     build:
       context: ./servers/filesystem
     ports:
-      - 8001:8000
+      - "8001:8000"
+    container_name: filesystem-server
+    networks:
+      - openapi-net
+
   memory-server:
     build:
       context: ./servers/memory
     ports:
-      - 8002:8000
+      - "8002:8000"
+    container_name: memory-server
+    networks:
+      - openapi-net
+
   time-server:
     build:
       context: ./servers/time
     ports:
-      - 8003:8000
+      - "8003:8000"
+    container_name: time-server
+    networks:
+      - openapi-net
+
+networks:
+  openapi-net:
+    name: openapi-net
 

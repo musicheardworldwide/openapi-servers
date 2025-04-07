@@ -15,7 +15,14 @@ app = FastAPI(
 )
 
 
-origins = ["*"]
+origins = [
+    "http://localhost:3000",    # Default Open WebUI port
+    "http://localhost:8080",    # Alternative development port
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:8080",
+    "http://0.0.0.0:3000",
+    "http://0.0.0.0:8080",
+]
 
 app.add_middleware(
     CORSMiddleware,
@@ -174,3 +181,11 @@ def list_time_zones():
     Return a list of all valid IANA time zones.
     """
     return pytz.all_timezones
+
+
+@app.get("/health")
+def health_check():
+    """
+    Health check endpoint
+    """
+    return {"status": "healthy", "service": "time-server"}

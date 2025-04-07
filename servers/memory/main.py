@@ -14,7 +14,15 @@ app = FastAPI(
     description="A structured knowledge graph memory system that supports entity and relation storage, observation tracking, and manipulation.",
 )
 
-origins = ["*"]
+# Configure CORS with explicit origins
+origins = [
+    "http://localhost:3000",    # Default Open WebUI port
+    "http://localhost:8080",    # Alternative development port
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:8080",
+    "http://0.0.0.0:3000",
+    "http://0.0.0.0:8080",
+]
 
 app.add_middleware(
     CORSMiddleware,
@@ -295,3 +303,11 @@ def open_nodes(req: OpenNodesRequest):
     names = {e.name for e in entities}
     relations = [r for r in graph.relations if r.from_ in names and r.to in names]
     return KnowledgeGraph(entities=entities, relations=relations)
+
+
+@app.get("/health")
+def health_check():
+    """
+    Health check endpoint
+    """
+    return {"status": "healthy", "service": "memory-server"}
